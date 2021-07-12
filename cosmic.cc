@@ -1,8 +1,8 @@
 /*******************************************************************************
 Program to calculate cosmological distances in standard Lambda cosmology
-Copyright (C) 2003-2011  Joshua Kempner
+Copyright (C) 2003-2021  Joshua Kempner
 
-Version 2.0.8
+Version 2.1.0
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ josh@kempner.net.
 
 using namespace std;
 
-string version = "2.0.8";
+string version = "2.1.0";
 
 void help()
 {
@@ -48,6 +48,7 @@ void help()
        << "   z=value      - single redshift for quick mode\n"
        << "   quiet=yes    - suppress copyright message\n"
        << "   prompt=no    - don't prompt for cosmological parameters\n"
+       << "   html=yes     - output formatted in HTML"
        << "   batch=file   - run in batch mode using redshifts in \"file\"\n"
        << "   outfile=file - output batch mode results to \"file\"\n"
        << "   help=yes     - print this message\n"
@@ -167,6 +168,7 @@ int main(int argc, char** argv)
     bflags["help"] = false;
     bflags["quiet"] = false;
     bflags["prompt"] = true;
+    bflags["html"] = false;
     bflags["version"] = false;
     sflags["batch"] = "";
     sflags["outfile"] = "cosmic.out";
@@ -199,7 +201,10 @@ int main(int argc, char** argv)
     if (fflags["z"] != -1)
     {
         c->setRedshift(fflags["z"]);
-        c->printLong();
+        if (bflags["html"])
+            c->printAsHtml();
+        else
+            c->printLong();
     }
     else if (!sflags["batch"].length())
     {
@@ -216,7 +221,10 @@ int main(int argc, char** argv)
             {
                 c->setRedshift(z);
                 cout << "\n"; // extra blank line for readability
-                c->printLong();
+                if (bflags["html"])
+                    c->printAsHtml();
+                else
+                    c->printLong();
                 cout << endl;
             }
             else

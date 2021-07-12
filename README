@@ -178,6 +178,8 @@ prompt  boolean  yes        Prompt the user for the cosmological
 
 quiet   boolean  no         Suppress the copyright message
 
+html    boolean  no         Format the output using HTML
+
 help    boolean  no         Print a help message
 
 version boolean  no         Print the version number of cosmic
@@ -226,6 +228,7 @@ Cosmic:
                     allowing for a redshift of 0.
 22 Nov 2011  2.0.8  Updated header includes for compatibility with newer
                     versions of gcc.
+12 Jul 2021  2.1.0  Added HTML output option.
 
 libcosmo:
 05 Feb 2003  1.0	Initial version
@@ -300,6 +303,7 @@ libcosmo:
                       results. XVI. Cosmological parameters," Astronomy &
                       Astrophyics submitted, 2013.
                 	* Added the lookback time to z to the output in batch mode.
+12 Jul 2021  2.1.5  Added HTML output option.
 
 Copyright
 =========

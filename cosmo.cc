@@ -1,8 +1,8 @@
 /*******************************************************************************
 Definitions file for a cosmology library of general use in observational astronomy
-Copyright (C) 2003-2013  Joshua Kempner
+Copyright (C) 2003-2021  Joshua Kempner
 
-Version 2.1.4
+Version 2.1.5
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -208,6 +208,19 @@ void Cosmo::printParams(ostream& os = cout, const char* leader = "")
     os << "\n";
 }
 
+// print info about the cosmology to the given ostream (default stream is STDOUT)
+// "leader" is prepended to the output
+void Cosmo::printParamsAsHtml(ostream& os = cout, const char* leader = "")
+{
+    os << leader
+       << resetiosflags(ios::floatfield) << "H<sub>0</sub> = " << H0_
+       << ", &#x03A9;<sub>m</sub> = " << OmegaM_
+       << ", &#x03A9;<sub>&#x039B;</sub> = " << OmegaL_;
+    if (fabs(Omegak_) > numeric_limits<double>::epsilon())
+        os << ", &#x03A9;<sub>k</sub> = " << Omegak_;
+    os << "  (q<sub>0</sub> = " << q0_ << ")";
+}
+
 // print a verbose summary of all the member data to STDOUT
 void Cosmo::printLong()
 {
@@ -229,6 +242,33 @@ void Cosmo::printLong()
          << "  1\" = " << scale_ << " kpc\n";
     if (scale_)
         cout << "  1 kpc = " << 1/scale_ << "\"" << endl;
+}
+
+// print a verbose summary of all the member data to STDOUT
+void Cosmo::printAsHtml()
+{
+    cout << "<p>";
+    printParamsAsHtml();
+    cout << "<br />";
+    cout << setprecision(6)
+         << "At z = " << z_ << "</p>\n"
+         << "<table cellpadding=\"0\" cellspacing=\"\">\n"
+         << "<tr><td>&nbsp;&nbsp;age of the Universe at z</td><td>&nbsp;=&nbsp;"
+         << (age_ - tL_) / tropicalYear / 1e9 << " Gyr</td></tr>\n"
+         << "<tr><td>&nbsp;&nbsp;lookback time to z</td><td>&nbsp;=&nbsp;" << tL_ / tropicalYear / 1e9 << " Gyr</td></tr>\n"
+         << "<tr><td>&nbsp;&nbsp;angular diameter distance d<sub>A</sub></td><td>&nbsp;=&nbsp;" << dA_ << " Mpc</td></tr>\n"
+         << "<tr><td>&nbsp;&nbsp;luminosity distance d<sub>L</sub></td><td>&nbsp;=&nbsp;" << dL_ << " Mpc</td></tr>\n"
+         << "<tr><td>&nbsp;&nbsp;comoving radial distance d<sub>C</sub></td><td>&nbsp;=&nbsp;" << dC_ << " Mpc</td></tr>\n";
+    if (dM_ != dC_)
+        cout << "<tr><td>&nbsp;&nbsp;comoving transverse distance</td><td>&nbsp;=&nbsp;" << dM_ << " Mpc</td></tr>\n";
+    cout << "<tr><td>&nbsp;&nbsp;comoving volume out to z</td><td>&nbsp;=&nbsp;" << VC_ << " Gpc**3</td></tr>\n"
+         << setprecision(4) << scientific
+         << "<tr><td>&nbsp;&nbsp;critical density at z</td><td>&nbsp;=&nbsp;" << rhoCrit_ << " g cm**-3</td></tr>\n"
+         << setprecision(6) << fixed
+         << "<tr><td>&nbsp;&nbsp;1\"</td><td>&nbsp;=&nbsp;" << scale_ << " kpc</td></tr>\n";
+    if (scale_)
+        cout << "<tr><td>&nbsp;&nbsp;1 kpc</td><td>&nbsp;=&nbsp;" << 1/scale_ << "\"</td></tr>";
+    cout << "</table>" << endl;
 }
 
 // print to an ofstream a header line suitable for use with printShort()
