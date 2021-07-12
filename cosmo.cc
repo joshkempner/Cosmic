@@ -261,9 +261,9 @@ void Cosmo::printAsHtml()
          << "<tr><td>&nbsp;&nbsp;comoving radial distance d<sub>C</sub></td><td>&nbsp;=&nbsp;" << dC_ << " Mpc</td></tr>\n";
     if (dM_ != dC_)
         cout << "<tr><td>&nbsp;&nbsp;comoving transverse distance</td><td>&nbsp;=&nbsp;" << dM_ << " Mpc</td></tr>\n";
-    cout << "<tr><td>&nbsp;&nbsp;comoving volume out to z</td><td>&nbsp;=&nbsp;" << VC_ << " Gpc**3</td></tr>\n"
+    cout << "<tr><td>&nbsp;&nbsp;comoving volume out to z</td><td>&nbsp;=&nbsp;" << VC_ << " Gpc<sup>3</sup></td></tr>\n"
          << setprecision(4) << scientific
-         << "<tr><td>&nbsp;&nbsp;critical density at z</td><td>&nbsp;=&nbsp;" << rhoCrit_ << " g cm**-3</td></tr>\n"
+         << "<tr><td>&nbsp;&nbsp;critical density at z</td><td>&nbsp;=&nbsp;" << rhoCrit_ << " g cm<sup>-3</sup></td></tr>\n"
          << setprecision(6) << fixed
          << "<tr><td>&nbsp;&nbsp;1\"</td><td>&nbsp;=&nbsp;" << scale_ << " kpc</td></tr>\n";
     if (scale_)
