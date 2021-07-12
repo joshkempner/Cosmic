@@ -193,37 +193,37 @@ History
 =======
 
 Cosmic:
-05 Feb 2003  1.0	Initial version
-10 Feb 2003  1.01	Improved handling of non-numeric redshifts
-03 Mar 2003  1.02	Added batch mode to print a list of distances given
+05 Feb 2003  1.0    Initial version
+10 Feb 2003  1.01   Improved handling of non-numeric redshifts
+03 Mar 2003  1.02   Added batch mode to print a list of distances given
                     an input file with a list of redshifts.  Added help
                     message and improved handling of command-line
                     arguments.
-06 Mar 2003  1.03	Improved handling of user input
-10 Jul 2003  1.04	Added additional command line options:
+06 Mar 2003  1.03   Improved handling of user input
+10 Jul 2003  1.04   Added additional command line options:
                     * Set individual cosmological parameters on command line
                     * Set output file name for batch mode
                     * Suppress prompting for cosmological parameters
-15 Jul 2003  2.0	Adapted to work with libcosmo version 2.0
-15 Apr 2004  2.0.1	Improved handling of improper user input
-15 Mar 2005  2.0.2	Cleaned up to compile under g++ with fewer warnings
-31 Mar 2006  2.0.3	Bug fixes:
+15 Jul 2003  2.0    Adapted to work with libcosmo version 2.0
+15 Apr 2004  2.0.1  Improved handling of improper user input
+15 Mar 2005  2.0.2  Cleaned up to compile under g++ with fewer warnings
+31 Mar 2006  2.0.3  Bug fixes:
                     * Added include statement for <cmath> to cosmic.cc
                       to allow compiling under gcc 4 on OS X.
                     * Changed Makefile to fix dependencies on libcosmo.a
                       so that it wouldn't force a re-compile even when
                       everything was up to date.
-02 Aug 2006  2.0.4	Added "quick mode" option for providing a redshift
+02 Aug 2006  2.0.4  Added "quick mode" option for providing a redshift
                     on the command line.  Further improved handling of
                     invalid user input.
-04 Aug 2006  2.0.5	Multiple changes:
+04 Aug 2006  2.0.5  Multiple changes:
                     * Moved validation of numeric user input into libcosmo
                       since it was also useful within the class's member
                       functions.
                     * Eliminated command line option for curvature since
                       libcosmo no longer supports it as a user-definable
                       parameter.
-01 Jul 2007  2.0.6	Cleaned up header includes.
+01 Jul 2007  2.0.6  Cleaned up header includes.
 27 Nov 2007  2.0.7  Improved handling of user-input redshifts, including
                     allowing for a redshift of 0.
 22 Nov 2011  2.0.8  Updated header includes for compatibility with newer
@@ -231,19 +231,19 @@ Cosmic:
 12 Jul 2021  2.1.0  Added HTML output option.
 
 libcosmo:
-05 Feb 2003  1.0	Initial version
-11 Feb 2003  1.01	Added inspection function for redshift, changed
+05 Feb 2003  1.0    Initial version
+11 Feb 2003  1.01   Added inspection function for redshift, changed
                     default parameters to those from the initial WMAP
                     results.
-25 Feb 2003  1.02	Fixed bug in initialization of z_
-25 Feb 2003  1.03	Added functions for more compact output and for output
+25 Feb 2003  1.02   Fixed bug in initialization of z_
+25 Feb 2003  1.03   Added functions for more compact output and for output
                     to files.
-06 Mar 2003  1.04	Added function to get cosmological parameters from the
+06 Mar 2003  1.04   Added function to get cosmological parameters from the
                     user interactively.
-05 Jun 2003  1.05	Internal clean-up of output functions to reduce
+05 Jun 2003  1.05   Internal clean-up of output functions to reduce
                     code duplication and improve versatility
-18 Jun 2003  1.06	Initialization bug in getCosmologyFromUser() fixed
-15 Jul 2003  2.0	Numerous changes including:
+18 Jun 2003  1.06   Initialization bug in getCosmologyFromUser() fixed
+15 Jul 2003  2.0    Numerous changes including:
                     * All distance measures now based on line-of-sight
                       comoving distance
                     * Universe with non-zero Lambda now uses Romberg
@@ -255,16 +255,16 @@ libcosmo:
                     * Added calculation of lookback time and age of the
                       Universe
                     * Rationalized public interface to output functions
-16 Jul 2003  2.0.1	Improved handling of non-numeric values input by user
+16 Jul 2003  2.0.1  Improved handling of non-numeric values input by user
                     in getCosmologyFromUser()
-15 Apr 2004  2.0.2	Minor fix to allow compilation with certain strict
+15 Apr 2004  2.0.2  Minor fix to allow compilation with certain strict
                     compilers
-15 Mar 2005  2.0.3	Cleaned up to compile under g++ with fewer warnings;
+15 Mar 2005  2.0.3  Cleaned up to compile under g++ with fewer warnings;
                     added calculation of critical density at z
-05 Jan 2006  2.0.4	Simplified code in output functions and fixed
+05 Jan 2006  2.0.4  Simplified code in output functions and fixed
                     formatting of printParams output if called multiple
                     times.
-04 Aug 2006  2.1	Multiple changes:
+04 Aug 2006  2.1    Multiple changes:
                     * Added non-member function for validation of numeric
                       user input. The function is adapted from the one that
                       was included in cosmic v2.0.4.
@@ -302,7 +302,7 @@ libcosmo:
                       multipoles, Table 2 of Planck Collaboration, "Planck 2013
                       results. XVI. Cosmological parameters," Astronomy &
                       Astrophyics submitted, 2013.
-                	* Added the lookback time to z to the output in batch mode.
+                    * Added the lookback time to z to the output in batch mode.
 12 Jul 2021  2.1.5  Added HTML output option.
 
 Copyright
