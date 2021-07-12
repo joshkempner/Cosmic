@@ -1,8 +1,8 @@
 /*******************************************************************************
 Header file for a cosmology library of general use in observational astronomy
-Copyright (C) 2003-2011  Joshua Kempner
+Copyright (C) 2003-2013  Joshua Kempner
 
-Version 2.1.3
+Version 2.1.4
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -63,14 +63,16 @@ class Cosmo
   }
   inline double E(const double z) // calculate expansion factor at a given redshift
   {
-    return sqrt(OmegaM_ * pow(1 + z, 3) + Omegak_ * SQR(1 + z) + OmegaL_);
+    return sqrt(OmegaM_ * CUBE(1 + z) + Omegak_ * SQR(1 + z) + OmegaL_);
   }
   inline double inverseOfE(const double z) { return 1.0 / E(z); }
-  inline double ageIntegrand(const double z) { return 1.0 / (1+z) / E(z); }
+	inline double lookbackIntegrand(const double z) { return 1.0 / (1 + z) / E(z); }
+  double ageIntegrand(const double z);
   typedef double (Cosmo::*PFD)(const double);
   double romberg(PFD, double, double);
   void setDistances(); // set the distance measures
   inline double SQR(const double a) { return a*a; }
+  inline double CUBE(const double a) { return a*a*a; }
 
 public:
   // constructors etc.

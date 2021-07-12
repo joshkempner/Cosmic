@@ -1,8 +1,8 @@
 /*******************************************************************************
 Definitions file for a cosmology library of general use in observational astronomy
-Copyright (C) 2003-2011  Joshua Kempner
+Copyright (C) 2003-2013  Joshua Kempner
 
-Version 2.1.3
+Version 2.1.4
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ void Cosmo::init(const double hNought, const double omegaMatter,
         Omegak_ = 0;
     q0_ = 0.5 * OmegaM_ - OmegaL_;
     dH_ = c / H0_;
-    age_ = romberg(&Cosmo::ageIntegrand, 0, 1000) / H0_ * kmPerMpc;
+    age_ = romberg(&Cosmo::ageIntegrand, 0.0, 1.0-numeric_limits<double>::epsilon()) / H0_ * kmPerMpc;
     dC_ = 0;
     dM_ = 0;
     dA_ = 0;
@@ -67,6 +67,15 @@ void Cosmo::init(const double hNought, const double omegaMatter,
     z_ = 0;
     scale_ = 0;
     rhoCrit_ = 0;
+}
+
+// Integrand for computing the age of the universe. Uses a change of
+// variables z = x / (1-x) so that integration from 0->Inf becomes an
+// integration from 0->1.
+double Cosmo::ageIntegrand(const double x)
+{
+	double z = x / (1 - x);
+	return 1.0 / (1 + z) / E(z) / SQR(1 - x);
 }
 
 // Romberg integration
@@ -83,7 +92,7 @@ double Cosmo::romberg(PFD func, double a, double b)
     
     // Loop over the desired number of rows, i = 2,...,N
     int i,j,k;
-    for( i=1; i<N; ++i )
+    for(i = 1; i < N; ++i)
     {
         // Compute the summation in the recursive trapezoidal rule
         h /= 2.0;          // Use panels half the previous size
@@ -114,7 +123,10 @@ double Cosmo::romberg(PFD func, double a, double b)
 // default constructor
 Cosmo::Cosmo()
 {
-    init(71, 0.27, 0.73); // values from initial WMAP release
+	// Default values are from 2013 Planck + WMAP polarization at low
+	// multipoles, Table 2 of Planck Collaboration, "Planck 2013 results.
+	// XVI. Cosmological parameters," Astronomy & Astrophyics submitted, 2013.
+    init(67.04, 0.3183, 0.6817);
 }
 
 // constructor with non-default cosmological parameters
@@ -144,7 +156,7 @@ void Cosmo::setDistances()
 {
     // calculate critical density
     rhoCrit_ = 3.0 / 8.0 / PI * SQR(H0_ / kmPerMpc) / G *
-    (OmegaL_ + pow(1 + z_, 3) * OmegaM_);
+    (OmegaL_ + CUBE(1 + z_) * OmegaM_);
     
     if (!z_)
     {
@@ -160,25 +172,25 @@ void Cosmo::setDistances()
     if (Omegak_ > 0)
     {
         dM_ = dH_ / sqrt(Omegak_) * sinh(sqrt(Omegak_) * dC_ / dH_);
-        VC_ = 2 * PI * pow(dH_, 3) / Omegak_ *
+        VC_ = 2 * PI * CUBE(dH_) / Omegak_ *
             (dM_ / dH_ * sqrt(1 + Omegak_ * SQR(dM_ / dH_)) -
              asinh(sqrt(fabs(Omegak_)) * dM_ / dH_) / sqrt(fabs(Omegak_))) / 1e9;
     }
     else if (Omegak_ < 0)
     {
         dM_ = dH_ / sqrt(fabs(Omegak_)) * sin(sqrt(fabs(Omegak_)) * dC_ / dH_);
-        VC_ = 2 * PI * pow(dH_, 3) / Omegak_ *
+        VC_ = 2 * PI * CUBE(dH_) / Omegak_ *
             (dM_ / dH_ * sqrt(1 + Omegak_ * SQR(dM_ / dH_)) -
              asin(sqrt(fabs(Omegak_)) * dM_ / dH_) / sqrt(fabs(Omegak_))) / 1e9;
     }
     else
     {
         dM_ = dC_;
-        VC_ = 4 * PI * pow(dM_, 3) / 3 / 1e9;
+        VC_ = 4 * PI * CUBE(dM_) / 3 / 1e9;
     }
     dA_ = dM_ / (1 + z_);
     dL_ = dM_ * (1 + z_);
-    tL_ = romberg(&Cosmo::ageIntegrand, 0, z_) / H0_ * kmPerMpc;
+    tL_ = romberg(&Cosmo::lookbackIntegrand, 0, z_) / H0_ * kmPerMpc;
     scale_ = dA_ / 648 * PI;
 }
 
@@ -224,7 +236,7 @@ void Cosmo::printLong()
 void Cosmo::printShortHeader(ostream & os = cout)
 {
     printParams(os, "# ");
-    os << "# z \td_A \td_L \td_M \tscale \t1/scale" << endl;
+    os << "# z \td_A \td_L \td_C \tscale \t1/scale \ttL" << endl;
 }
 
 // print (to an ostream) the parameters on a single line.
@@ -233,7 +245,7 @@ void Cosmo::printShort(ostream & os = cout)
 {
     os << setprecision(6)
        << z_ << "\t" << dA_ << "\t" << dL_ << "\t" << dC_ << "\t" << scale_ << "\t"
-       << 1/scale_ << endl;
+       << 1/scale_ << "\t" << tL_ / tropicalYear / 1e9 << endl;
 }
 
 // set the cosmological parameters and the secondary stuff derived from them

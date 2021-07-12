@@ -25,11 +25,11 @@ Installation
 A Makefile is included with the distribution. The following options are
 available in the Makefile:
 
-	make libcosmo	- compile the library only
-	make cosmic	- compile the "cosmic" program only
-	make all	- compile both the library and "cosmic"
-	make clean	- remove intermediate files
-	make distclean	- remove all compiled files
+	make libcosmo  - compile the library only
+	make cosmic    - compile the "cosmic" program only
+	make all       - compile both the library and "cosmic"
+	make clean     - remove intermediate files
+	make distclean - remove all compiled files
 
 Class Library Interface
 =======================
@@ -37,7 +37,7 @@ Class Library Interface
 The public interface of the class Cosmo is as follows:
 
 Cosmo()
-	default constructor.  H_o = 71, O_m = 0.27, O_L = 0.73
+	default constructor.  H_o = 67.04, O_m = 0.3183, O_L = 0.6817
 
 Cosmo(const double h, const double om, const double ol)
 	constructor that allows the cosmological parameters to be set explicitly
@@ -144,8 +144,8 @@ int main(int argc, char** argv)
 
    // print distances from z=0.1 to 1 in steps of 0.1
    while (z <= 1.0) {
-      c->setRedshift(z);  // set z=0.1
-      c->>printLong();  // print the derived quantities
+      c->setRedshift(z);  // set z
+      c->printLong();  // print the derived quantities
       z += 0.1;
    }
    return 0;
@@ -156,13 +156,13 @@ User interface to cosmic
 
 Cosmic supports a number of command line options, invoked as option=value:
 
-option  type	   default	  description
+option  type     default    description
 ----------------------------------------------------------------------------
-h       float    71         Value of the Hubble constant
+h       float    67.04      Value of the Hubble constant
 
-m       float    0.27       Value of Omega matter
+m       float    0.3183     Value of Omega matter
 
-l       float    0.73       Value of Omega Lambda
+l       float    0.6817     Value of Omega Lambda
 
 z       float    --         Single redshift for quick mode; calculates
                             values for the given redshift, prints the
@@ -224,6 +224,8 @@ Cosmic:
 01 Jul 2007  2.0.6	Cleaned up header includes.
 27 Nov 2007  2.0.7  Improved handling of user-input redshifts, including
                     allowing for a redshift of 0.
+22 Nov 2011  2.0.8  Updated header includes for compatibility with newer
+                    versions of gcc.
 
 libcosmo:
 05 Feb 2003  1.0	Initial version
@@ -280,11 +282,29 @@ libcosmo:
                       of Portsmouth for finding this bug.
                     * Improved the intialization function and the printLong()
                       functions to better handle z=0.
+22 Nov 2011  2.1.3  Multiple changes:
+                    * Fixed a bug in calculating the comoving volume for Omega-
+                      kappa != 0. Thanks to Dimitrios Emmanoulopoulos for
+                      finding this bug.
+                    * Fixed a bug in the constructor that prevented Omega-kappa
+                      from being set to a value < 0.
+                    * Updated header includes for compatibility with newer
+                      versions of gcc.
+23 Nov 2013  2.1.4  Multiple changes:
+                    * Redefined the integrand for computing the age of the
+                      Universe using variable substitution so it successfully
+                      integrates from z=0 to z=infinity.
+                    * Changed the default values of the cosmological parameters
+                      to those from Planck + WMAP polarization at low
+                      multipoles, Table 2 of Planck Collaboration, "Planck 2013
+                      results. XVI. Cosmological parameters," Astronomy &
+                      Astrophyics submitted, 2013.
+                	* Added the lookback time to z to the output in batch mode.
 
 Copyright
 =========
 
-Copyright (C) 2003-2007  Joshua Kempner <josh@kempner.net>
+Copyright (C) 2003-2013  Joshua Kempner <josh@kempner.net>
 This program is free software; you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 2 of the License, or (at your option)
